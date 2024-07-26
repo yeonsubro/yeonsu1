@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>HTML Forms</h2>
+    <p>사용자 정보 입력</p>
+    <form action="form_ok.php" method="post">
+        <label for="uname">이름</label>
+        <input type="text" id="name" name="uname"
+    placeholder='이름을 입력'><br>
+
+        <label for="email">부서</label>
+        <input type="text" id="department" name="부서"
+        placeholder='부서를 입력'><br>       
+        
+        <label for="position">직책</label>
+        <input type="text" id="position" name="직책"
+        placeholder='직책를 입력'><br>
+
+        <label for="photo">사진</label>
+        <input type="submit" value="파일선택">
+
+        <label for="photo"> 선택된 파일 없음</label><br><br>
+        <input type ="submit" value="새 사원 추가" style="background-color: red; color: white;"><br>
+        <hr>
+        </form>
+        <input type="submit" value="선택 삭제">
+        <label for="search">| 검색:</label>
+
+        <select name="이름">
+            <option value="1">이름</option>
+            <option value="2">박승빈</option>
+            <option value="3">똥구멍</option>
+            <input type="text" id="searching" name="검색창"><br>
+
+    <table border="1">
+        <tr>
+            <th colspan="1"><input type="checkbox"></th>
+
+            <th colspan="2">번호</th>
+
+            <th colspan="3">사진</th>
+            
+       
+         
+            <th colspan="4">사원명</th>
+
+            <th colspan="5">부서</th>
+
+            <th colspan="6">직급</th>
+
+            <th colspan="7">수정</th>
+
+            <th colspan="8">삭제</th>
+            
+        </tr>
+        <br>
+        <img src="https://thumb.mt.co.kr/06/2022/12/2022120516413633469_3.jpg/dims/optimize/" alt="호날두" width="100">
+    </table>
+</body>
+</html>
