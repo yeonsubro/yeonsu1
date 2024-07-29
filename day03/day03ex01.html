@@ -7,67 +7,44 @@
     <script>
         window.onload=function() {
             var memoTxt = document.getElementById('memoTxt');
-
-            // querySelector('')은 CSS의 선택기(selecor)를 그대로 사용 가능.
-            // id는 #으로 시작
-            // class는 .으로 시작
-            // 속성은 []로 구분해서 사용.
-            // 태그는 그냥 태그 이름으로...
             var demo = document.querySelector('#demo');
             var clickBtn = document.querySelector('#clickBtn');
             var resetBtn = document.querySelector('#resetBtn');
-            
-            // TDD : 테스트 주도 기발 ...
-            //console.log(memoTxt, demo, resetBtn);
 
-            // ### 의사 코드 ###
-            // 0. 이벤트 핸들러 만들기 (각자 만들기)
-            // #clickBtn
-            // clickBtn.onclick = function(event) {}
-            // console.dir(clickBtn);
-            clickBtn.addEventListener('click', function(event) {
-                // 1. 클릭 되는지 확인
-                //alert('버튼 클릭 했다');
-                //console.log('버튼 클릭 했다!');
-
-                // 2. 메모 input의 데이터 가져오기
-                //console.dir(memoTxt.value);
-                // 선원 시 키워드 없으면 window.memoTxtVal
-                // var는 스코프 범위가 함수 단위이다.
-                // let은 자바처럼 스코프 범위가 블럭단위이다.
-                var memoTxtVal = memoTxt.value;
-                
-                // 3. 가져온 데이터를 텍스트로 변경
-                demo.innerHTML = memoTxtVal;
-
-                // 4. 초기화 시키기
+            var handleEvent = function(event) {
+                demo.innerHTML += "<br>" + memoTxt.value;
                 memoTxt.value = "";
                 memoTxt.focus();
-            });
-            // Enter키를 누르면 메모를 텍스트로 변경.
-            // 1. memoTxt 인풋에 키이벤트 핸들러
-            // 2. Enter키인지 확인
-            // 3. Enter키라면 데이터 처리
-            memoTxt.addEventListener('keydown', function(event) {
-                if(event.keyCode === 13){
-                    var memoTxtVal = memoTxt.value;
-                    demo.innerHTML = memoTxtVal;
-                    memoTxt.value = "";
-                    memoTxt.focus();
-                }   
-            });
-            resetBtn.addEventListener('click', function() {
-                demo.innerText = "JavaScript can change HTML content.";
-            });
+            }
+            clickBtn.addEventListener('click', handleEvent);
+
+            memoTxt.onkeyup = function() {
+                if(event.keyCode === 13) {
+                    handleEvent(event);
+                }
+            }
         }
     </script>
 </head>
 <body>
-    메모: <input type="text" id="memoTxt" value="안녕 세계">
-    <p id="demo">JavaScript can change HTML content.</p>
-
-    <!-- 인터널 방식 적용 -->
+    <h1>Todo List</h1>
+    메모: <input type="text" id="memoTxt" value="안녕 세계"> 
     <button type="button" id="clickBtn">Click</button>
     <button type="button" id="resetBtn">Reset</button>
+    <hr>
+    <table id="demo" width="550" border="1">
+        <tr>
+            <th>확인</th>
+            <th>할일</th>
+            <th>수정</th>
+            <th>삭제</th>
+        </tr>
+        <tr align="center">
+            <td><input type="checkbox"></td>
+            <td>개 밥 주기</td>
+            <td><button>수정</button></td>
+            <td><button>삭제</button></td>
+        </tr>
+    </table>
 </body>
 </html>
