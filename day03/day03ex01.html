@@ -4,47 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- 자바스크립트는 인터프리터 언어(c언어는 컴파일)
-     - 컴파일은 변역에 비유
-     - 인터프리터는 통역에 비유
-     -->
     <script>
-        // 자바 스크립트에서는 모든 요소가 객체이다
-        // var num = 100;
-        // console.log(num.valueOF())
+        window.onload=function() {
+            var memoTxt = document.getElementById('memoTxt');
 
-        // 이벤트 핸들러를 이용해서 문서의 모든 요소가 로드되면 실행
-        // 자바스크립트 진입점
-        // window.addEventListener('load',function(){});
-        window.onload = function(){
-            console.dir(window.document.body);
-            // id값으로 태그 엘리먼트를 객체로 참조
-            var demo = document.getElementById('demo');
-            var changeBtn = document.getElementById('changeBtn');
-            var resetBtn = document.getElementById('resetBtn');
-            //console.log(demo);
-            //console.log(changeBtn);
-            //console.log(resetBtn);
-            // 버튼에 클릭 이벤트 핸들러를 추가해서 내용이 변경 되도록하기
-            clickBtn.onclick = function(){
-                demo.innerHTML = "클릭되엇습니다.";
-                document.body.bgColor = "gray";
-            }
-            resetBtn.onclick = function(){
-                demo.innerHTML = "JavaScript can change HTML content.";
-                document.body.bgColor = "";
-            }
+            // querySelector('')은 CSS의 선택기(selecor)를 그대로 사용 가능.
+            // id는 #으로 시작
+            // class는 .으로 시작
+            // 속성은 []로 구분해서 사용.
+            // 태그는 그냥 태그 이름으로...
+            var demo = document.querySelector('#demo');
+            var clickBtn = document.querySelector('#clickBtn');
+            var resetBtn = document.querySelector('#resetBtn');
+            
+            // TDD : 테스트 주도 기발 ...
+            //console.log(memoTxt, demo, resetBtn);
+
+            // ### 의사 코드 ###
+            // 0. 이벤트 핸들러 만들기 (각자 만들기)
+            // #clickBtn
+            // clickBtn.onclick = function(event) {}
+            // console.dir(clickBtn);
+            clickBtn.addEventListener('click', function(event) {
+                // 1. 클릭 되는지 확인
+                //alert('버튼 클릭 했다');
+                //console.log('버튼 클릭 했다!');
+
+                // 2. 메모 input의 데이터 가져오기
+                //console.dir(memoTxt.value);
+                // 선원 시 키워드 없으면 window.memoTxtVal
+                // var는 스코프 범위가 함수 단위이다.
+                // let은 자바처럼 스코프 범위가 블럭단위이다.
+                var memoTxtVal = memoTxt.value;
+                
+                // 3. 가져온 데이터를 텍스트로 변경
+                demo.innerHTML = memoTxtVal;
+
+                // 4. 초기화 시키기
+                memoTxt.value = "";
+                memoTxt.focus();
+            });
+            // Enter키를 누르면 메모를 텍스트로 변경.
+            // 1. memoTxt 인풋에 키이벤트 핸들러
+            // 2. Enter키인지 확인
+            // 3. Enter키라면 데이터 처리
+            memoTxt.addEventListener('keydown', function(event) {
+                if(event.keyCode === 13){
+                    var memoTxtVal = memoTxt.value;
+                    demo.innerHTML = memoTxtVal;
+                    memoTxt.value = "";
+                    memoTxt.focus();
+                }   
+            });
+            resetBtn.addEventListener('click', function() {
+                demo.innerText = "JavaScript can change HTML content.";
+            });
         }
     </script>
 </head>
 <body>
-    <h2>What Can JavaScript Do?</h2>
-
+    메모: <input type="text" id="memoTxt" value="안녕 세계">
     <p id="demo">JavaScript can change HTML content.</p>
 
     <!-- 인터널 방식 적용 -->
-    <button type="button" id="clickBtn" >Change</button>
+    <button type="button" id="clickBtn">Click</button>
     <button type="button" id="resetBtn">Reset</button>
-   
 </body>
 </html>
