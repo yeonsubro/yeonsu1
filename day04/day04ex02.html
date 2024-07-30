@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>초등학교 저학년용 계산기</h1>
+    <from action="">
+        <fieldset>
+            <legend>계산기</legend>
+            <input type="text" size="2" value="0" class="hang1">
+            <select name="" id="oper">
+                <option value="+">+</option>
+                <option value="-">-</option>
+                <option value="*">*</option>
+                <option value="/">/</option>
+            </select>
+            <input type="text" size="2" value="0" class="hang2">
+            <button class="resultBtn">=</button>
+            <span class="resultArea">0</span>
+        </fieldset>
+    </from>
+
+    <script>
+        // getElementsByclassname은 리턴형이 리스트(htmlCollection) 형태이다
+        var hang1 = document.getElementsByClassName('hang1')[0];
+        var hang2 = document.querySelectorAll('.hang2')[0];
+        //querySelectorAll이나 querySelector는 CSS선택기를 그대로 사용.
+        var resultBtn = document.querySelector('.resultBtn');
+        var resultArea = document.querySelector('.resultArea');
+        var oper = document.getElementById('oper');
+        
+        console.log(hang1);
+        console.log(hang2);
+        console.log(resultBtn);
+    </script>
+</body>
+</html>

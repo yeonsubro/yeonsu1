@@ -1,79 +1,104 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
-        var  todoList = [
-            {seq:101,title:"여행하기",done:false},
-            {seq:102,title:"포트폴리오 만들기",done:true},
-            {seq:103,title:"팀 프로젝트 하기",done:false},
-            {seq:104,title:"엄마 생일 선물 준비하기",done:false},
+        var todoList = [
+            {seq: 101, title: "학교오기", done: false},
+            {seq: 102, title: "포트폴리오 만들기", done: false},
+            {seq: 103, title: "팀 프로젝트 하기", done: false},
+            {seq: 104, title: "과제하기", done: false},
         ];
         var seqCnt = 105;
 
-        window.onload=function() {
-            var memoTxt = document.getElementById('memoTxt');
-            var demo = document.querySelector('#demo');
-            var clickBtn = document.querySelector('#clickBtn');
-            var resetBtn = document.querySelector('#resetBtn');
-
-            function drawList(){
-                //todoList 배열의 내용을 목록으로 만든다.
-                //반복하기 전에 초기화 필수.
-                demo.innerHTML="";
-                todoList.forEach(function(todoObj){
-                    console.log(todoObj.seq, todoObj.title, todoObj.done);
-                    demo.innerHTML += `<tr align="center">
-                        <td><input type="checkbox"></td>
-                        <td>${ todoObj.title}</td>
-                        <td><button>수정</button></td>
-                        <td><button>삭제</button></td>
-                    </tr>`;
-                    const searchInput = document.getElementById('searchInput');
-  searchInput.addEventListener('input', () => {
-    const keyword = searchInput.value.toLowerCase();
-    const filteredTodos = todoList.filter(todo => todo.title.toLowerCase().includes(keyword));
-    drawList(filteredTodos);
-                });
-            }
-            //함수는 호출 해야 실행 된다.
+        function handleDelEvt(seq) {
+            todoList = todoList.filter(function (todoObj) {
+                return todoObj.seq !== seq;
+            });
             drawList();
+        }
 
-            var handleEvent = function(event){
-                //todoList에 객체를 추가한다. push를 사용해서.
-                todolist.push({seq:seqCount,title:message.value,done:false});
-                seqCount++;
+        function editClickHandle(seq) {
+            console.log("editClickHandle for seq:", seq);
+        }
+
+        function handleCheckBoxChange(seq) {
+            todoList = todoList.map(function(todoObj) {
+                if (todoObj.seq === seq) {
+                    todoObj.done = !todoObj.done;
+                }
+                return todoObj;
+            });
+            drawList();
+        }
+
+        function drawList(filteredTodoList = todoList) {
+            var demo = document.querySelector('#demo');
+            demo.innerHTML = "";
+            filteredTodoList.forEach(function (todoObj) {
+                demo.innerHTML += `<tr align="center">
+                    <td><input type="checkbox" ${todoObj.done ? 'checked' : ''} onclick="handleCheckBoxChange(${todoObj.seq})"></td>
+                    <td style="text-decoration: ${todoObj.done ? 'line-through' : 'none'}">${todoObj.title}</td>
+                    <td><button onclick="editClickHandle(${todoObj.seq})">수정</button></td>
+                    <td><button onclick="handleDelEvt(${todoObj.seq})">삭제</button></td>
+                </tr>`;
+            });
+        }
+        window.onload = function () {
+            var memoTxt = document.getElementById('memoTxt');
+            var clickBtn = document.querySelector('#clickBtn');
+            var searchBtn = document.querySelector('#searchBtn');
+            var searchTxt = document.querySelector('#searchTxt');
+
+            function handleEvent(event) {
+                todoList.push({seq: seqCnt++, title: memoTxt.value, done: false});
                 drawList();
                 memoTxt.value = "";
                 memoTxt.focus();
             }
+
             clickBtn.addEventListener('click', handleEvent);
 
-            memoTxt.onkeyup = function() {
-                if(event.keyCode === 13) {
+            memoTxt.onkeyup = function (event) {
+                if (event.keyCode === 13) {
                     handleEvent(event);
                 }
             }
+
+            searchBtn.addEventListener('click', function () {
+                var searchValue = searchTxt.value.toLowerCase();
+                var filteredTodoList = todoList.filter(function (todoObj) {
+                    return todoObj.title.toLowerCase().includes(searchValue);
+                });
+                drawList(filteredTodoList);
+            });
+
+            drawList();
         }
     </script>
 </head>
 <body>
-    <h1>Todo List</h1>
-    메모: <input type="text" id="memoTxt" value="hello world"> 
-    <button type="button" id="clickBtn">Click</button>
+<h1>Todo List</h1>
+    메모: <input type="text" id="memoTxt" value="hello">
+    <button type="button" id="clickBtn">Save</button>
     <button type="button" id="resetBtn">Reset</button>
     <hr>
-    <table id="demo" width="550" border="1">
+    검색: <input type="text" id="searchTxt">
+    <button id="searchBtn">검색</button>
+    <hr>
+    <table width="550" border="1">
         <thead>
-        <tr>
-            <th>확인</th>
-            <th>할일</th>
-            <th>수정</th>
-            <th>삭제</th>
-        </tr>
-    </thead>
+            <tr>
+                <th>확인</th>
+                <th>할일</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+        </thead>
+        <tbody id="demo">
+        </tbody>
     </table>
 </body>
 </html>
