@@ -5,8 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        
+        ul{
+            margin: auto;
+            border: 1px solid rgb(126, 213, 248);
+            padding: 0;
+            /* height 속성을 주지 않고 overflow 설정*/
+            overflow: hidden;
+            width: 600px;
+        
+        }
+        
         div {
-            border: 1px solid navy;
+            border: 3px solid rgb(68, 68, 219);
             padding: 5px;
             border-radius: 8px;
         }
@@ -27,11 +38,11 @@
             text-align: center;
         }
         div.header div {
-            height: 50px;
+            height: none;
         }
 
         div.middle > div:nth-child(1) {
-            width: 180px;
+            width: 80px;
         }
         div.middle > div:nth-child(2) {
             width: 590px;
@@ -43,21 +54,33 @@
             float: left;
             height: 300px;
         }
+        
     </style>
 </head>
 <body>
+
     <div class="container">
         <div class="header">
-            <h1>Hello world</h1>
-            <div></div>
+            <h1>삼각두의 정신머리</h1>
+            <div>
+                <nav>
+                    <ul>
+                      <li>Home</li>
+                      <li>Profile</li>
+                      <li>Gallery</li>
+                      <li>Lecture</li>
+                      <li>Shop</li>
+                    </ul>
+                </nav>
+            </div>
         </div>
         <div class="middle">
-            <div></div>
-            <div></div>
-            <div></div>
+            <div>첫번재</div>
+            <div>두번째</div>
+            <div>세번재</div>
         </div>
         <div class="footer">
-
+            마지막
         </div>
     </div>
 </body>
