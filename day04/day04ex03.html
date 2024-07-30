@@ -13,14 +13,34 @@
 </head>
 <body>
     <h1>JS from Validation</h1>
-    <form action="" id="myform" onsubmit="validationForm()">
+    <form action="" id="myForm" onsubmit="validationForm()">
         제목 : <input type="text" name="title"><br>
         이름 : <input type="text" name="name"><br>
         내용 : <textarea name="content"></textarea><br>
         <input type="submit" value="저장">
     </form>
     <script>
-
+        var myForm = document.getElementById('myForm');
+        myForm.onsubmit = function(event){
+            event.preventDefault();
+            if(myForm.title.value == ""){
+                alert('제목을 입력하세요~');
+                myForm.title.focus();
+            }
+        
+        if(myForm.title.value == ""){
+                alert('이름을 입력하세요~');
+                myForm.title.focus();
+            }
+        
+        if(myForm.title.value == ""){
+                alert('내용을 입력하세요~');
+                myForm.title.focus();
+            }
+            //모든 유효성 검사가 통과가 되면?
+            myForm.method ='POST'
+            myForm.submit();
+        }
 
     </script>
 </body>
