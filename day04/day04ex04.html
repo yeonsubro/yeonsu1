@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>토트넘 선수들</title>
     <style>
         header{
-            border: 1px solid blue;
+            border: 0px solid blue;
             width: 1000px;
             margin: auto;
         }
@@ -15,12 +15,10 @@
         }
         ul{
             margin: auto;
-            border: 1px solid rgb(126, 213, 248);
+            border: 0px solid rgb(126, 213, 248);
             padding: 0;
-            /* height 속성을 주지 않고 overflow 설정*/
             overflow: hidden;
             width: 600px;
-        
         }
         header ul li{
             width: 120px;
@@ -30,7 +28,7 @@
             list-style: none;
             float: left;
             box-sizing: border-box;
-            line-height:50px;
+            line-height: 50px;
             font-family: Arial, Helvetica, sans-serif;
         }
         nav{
@@ -40,21 +38,131 @@
             border-bottom: 2px solid red;
             font-weight: bold;
             color: red;
+            cursor: pointer;
+        }
+        section {
+            width: 1000px;
+            margin: auto;
+            padding-top: 20px;
+        }
+        .player {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .player h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 24px;
+        }
+        .player p {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+        .gallery, .tactics, .location {
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        .gallery img, .tactics img, .location img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+        .hidden {
+            display: none;
         }
     </style>
+    <script>
+        function showSection(sectionId) {
+            var sections = document.querySelectorAll('section > div');
+            sections.forEach(function(section) {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+        window.onload = function() {
+            showSection('home');
+        }
+    </script>
 </head>
 <body>
     <header>
-        <h1>빙글빙글 공작실</h1>
+        <h1>토트넘 선수들</h1>
         <nav>
             <ul>
-              <li>Home</li>
-              <li>Profile</li>
-              <li>Gallery</li>
-              <li>Lecture</li>
-              <li>Shop</li>
+              <li onclick="showSection('home')">Home</li>
+              <li onclick="showSection('profile')">Profile</li>
+              <li onclick="showSection('gallery')">Gallery</li>
+              <li onclick="showSection('tactics')">Tactics</li>
+              <li onclick="showSection('location')">Location</li>
             </ul>
         </nav>
     </header>
+    <section>
+        <div id="home" class="hidden">
+            <h2>토트넘 소개</h2>
+            <p>토트넘 홋스퍼 축구 클럽은 일반적으로 토트넘 또는 스퍼스로 불리며, 잉글랜드 런던 토트넘에 위치한 프로 축구 클럽입니다. 이들은 잉글랜드 축구의 최상위 리그인 프리미어 리그에서 경쟁합니다.</p>
+        </div>
+        <div id="profile" class="hidden">
+            <h2>선수 프로필</h2>
+            <div class="player">
+                <h2>해리 케인</h2>
+                <p><strong>포지션:</strong> 포워드</p>
+                <p><strong>키:</strong> 188 cm</p>
+                <p><strong>몸무게:</strong> 86 kg</p>
+            </div>
+            <div class="player">
+                <h2>손흥민</h2>
+                <p><strong>포지션:</strong> 포워드</p>
+                <p><strong>키:</strong> 183 cm</p>
+                <p><strong>몸무게:</strong> 78 kg</p>
+            </div>
+            <div class="player">
+                <h2>위고 요리스</h2>
+                <p><strong>포지션:</strong> 골키퍼</p>
+                <p><strong>키:</strong> 188 cm</p>
+                <p><strong>몸무게:</strong> 82 kg</p>
+            </div>
+            <div class="player">
+                <h2>델레 알리</h2>
+                <p><strong>포지션:</strong> 미드필더</p>
+                <p><strong>키:</strong> 188 cm</p>
+                <p><strong>몸무게:</strong> 76 kg</p>
+            </div>
+        </div>
+        <div id="gallery" class="hidden gallery">
+            <h2>선수 갤러리</h2>
+            <div class="player">
+                <h2>해리 케인</h2>
+                <img src="path/to/harry-kane.jpg" alt="해리 케인">
+            </div>
+            <div class="player">
+                <h2>손흥민</h2>
+                <img src="path/to/son-heung-min.jpg" alt="손흥민">
+            </div>
+            <div class="player">
+                <h2>위고 요리스</h2>
+                <img src="path/to/hugo-lloris.jpg" alt="위고 요리스">
+            </div>
+            <div class="player">
+                <h2>델레 알리</h2>
+                <img src="path/to/dele-alli.jpg" alt="델레 알리">
+            </div>
+        </div>
+        <div id="tactics" class="hidden tactics">
+            <h2>토트넘 전술</h2>
+            <p>토트넘은 4-3-3 또는 4-2-3-1 포메이션을 자주 사용하는 고강도 압박, 공격적인 스타일의 플레이를 채택합니다. 이 접근 방식은 빠른 전환, 견고한 수비 조직, 그리고 포워드들의 속도와 창의성을 활용하는 것을 중점으로 합니다.</p>
+            <img src="path/to/tactics.jpg" alt="토트넘 전술">
+        </div>
+        <div id="location" class="hidden location">
+            <h2>토트넘 홈구장</h2>
+            <p>토트넘 홋스퍼 스타디움은 토트넘 홋스퍼의 홈구장으로, 런던 북부에 위치해 있습니다. 이 구장은 이전의 화이트 하트 레인 구장을 대체하였으며, 62,062명의 관중을 수용할 수 있어 프리미어 리그에서 가장 큰 구장 중 하나입니다.</p>
+            <img src="path/to/stadium.jpg" alt="토트넘 홋스퍼 스타디움">
+        </div>
+    </section>
 </body>
 </html>
