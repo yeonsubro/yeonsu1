@@ -13,10 +13,10 @@ app.use(express.static('public'));
 
 // 사람 데이터 목록 선언
 const saramList = [
-    {no:102, name:'홍길동', email:'hong@saram.com', job:'도둑', age:23},
-    {no:101, name:'이길동', email:'lee@saram.com', job:'변호사', age:33},
-    {no:103, name:'김길순', email:'kim@saram.com', job:'프로그래머', age:27},
-    {no:104, name:'박길순', email:'park@saram.com', job:'군인', age:25}
+    {no:102, name:'도진호', email:'ahzumma@saram.com', job:'해적', age:23},
+    {no:101, name:'박승빈', email:'pigpig@saram.com', job:'먹방', age:33},
+    {no:103, name:'김현준', email:'ilovekid@saram.com', job:'성범죄자', age:27},
+    {no:104, name:'김동영', email:'sexyhot@saram.com', job:'군인', age:25}
 ];
 
 // localhost:8000/saram
