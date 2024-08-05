@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tottenham Hotspur FC</title>
+    <style>
+        /* 기존 스타일 */
+        body {
+            background-image: url('/yeonsubro/Tottenham_Hotspur_FC_files/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            height: 100;
+            overflow-y: auto;
+        }
+        header {
+            border: 0px solid blue;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+        }
+        h1 {
+            text-align: center;
+            font-family: 'Arial Black', Gadget, sans-serif;
+            color: darkblue;
+            margin: 10px 0;
+        }
+        ul {
+            margin: auto;
+            border: 0px solid rgb(126, 213, 248);
+            padding: 0;
+            overflow: hidden;
+            width: 600px;
+            display: flex;
+            justify-content: center;
+        }
+        header ul li {
+            width: 120px;
+            height: 50px;
+            border: 0px solid rgba(17, 132, 185, 0.288);
+            text-align: center;
+            list-style: none;
+            box-sizing: border-box;
+            line-height: 50px;
+            cursor: pointer;
+        }
+        header ul li:hover {
+            border-bottom: 2px solid darkblue;
+            font-weight: bold;
+            color: darkblue;
+        }
+        section {
+            width: 1000px;
+            margin: 100px auto 0;
+            padding-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 80px;
+        }
+        .player, .gallery, .tactics, .location {
+            border: 1px solid #ddd;
+            margin-bottom: 40px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .section-divider {
+            border-top: 2px solid #ddd;
+            margin: 40px 0;
+        }
+        .player h2, .gallery h2, .tactics h2, .location h2 {
+            margin: 0;
+            padding: 0;
+            font-size: 24px;
+        }
+        .player p, .gallery p, .tactics p, .location p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .gallery img, .tactics img, .location img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
+        .language-selector {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1001;
+        }
+        .scroll-target {
+            padding-top: 100px; /* 상단 고정 메뉴를 피하기 위한 여백 */
+            margin-top: -100px; /* 위쪽 여백 없애기 위한 음수 여백 */
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var sections = document.querySelectorAll('section > div');
+            var navLinks = document.querySelectorAll('nav ul li');
+            var languageSelector = document.querySelector('.language-selector select');
+
+            navLinks.forEach(function(link, index) {
+                link.addEventListener('click', function() {
+                    var target = sections[index].querySelector('.scroll-target');
+                    target.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            languageSelector.addEventListener('change', function() {
+                var lang = this.value;
+                var elementsToTranslate = document.querySelectorAll('[data-lang]');
+
+                elementsToTranslate.forEach(function(el) {
+                    var koText = el.getAttribute('data-lang-ko');
+                    var enText = el.getAttribute('data-lang-en');
+                    el.textContent = lang === 'en' ? enText : koText;
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1 data-lang data-lang-ko="토트넘 홋스퍼 FC" data-lang-en="Tottenham Hotspur FC">토트넘 홋스퍼 FC</h1>
+        <nav>
+            <ul>
+                <li data-lang data-lang-ko="홈" data-lang-en="Home">홈</li>
+                <li data-lang data-lang-ko="프로필" data-lang-en="Profile">프로필</li>
+                <li data-lang data-lang-ko="갤러리" data-lang-en="Gallery">갤러리</li>
+                <li data-lang data-lang-ko="전술" data-lang-en="Tactics">전술</li>
+                <li data-lang data-lang-ko="위치" data-lang-en="Location">위치</li>
+            </ul>
+        </nav>
+        <div class="language-selector">
+            <select>
+                <option value="ko">한국어</option>
+                <option value="en">English</option>
+            </select>
+        </div>
+    </header>
+    <section>
+        <div id="home" class="hidden">
+            <div class="scroll-target">
+                <h2 data-lang data-lang-ko="토트넘 소개" data-lang-en="Introduction">토트넘 소개</h2>
+                <p data-lang data-lang-ko="토트넘 홋스퍼 축구 클럽은 일반적으로 토트넘 또는 스퍼스로 불리며, 잉글랜드 런던 토트넘에 위치한 프로 축구 클럽입니다. 이들은 잉글랜드 축구의 최상위 리그인 프리미어 리그에서 경쟁합니다." data-lang-en="Tottenham Hotspur Football Club, commonly referred to as Tottenham or Spurs, is a professional football club based in Tottenham, London, England. They compete in the Premier League, the top tier of English football.">토트넘 홋스퍼 축구 클럽은 일반적으로 토트넘 또는 스퍼스로 불리며, 잉글랜드 런던 토트넘에 위치한 프로 축구 클럽입니다. 이들은 잉글랜드 축구의 최상위 리그인 프리미어 리그에서 경쟁합니다.</p>
+                <img src="/yeonsubro/Tottenham_Hotspur_FC_files/tottenham_intro.jpg" alt="토트넘 소개 이미지" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+        <div class="section-divider"></div>
+        <div id="profile" class="hidden">
+            <div class="scroll-target">
+                <h2 data-lang data-lang-ko="선수 프로필" data-lang-en="Player Profiles">선수 프로필</h2>
+                <div class="player">
+                    <h2 data-lang data-lang-ko="해리 케인" data-lang-en="Harry Kane">해리 케인</h2>
+                    <p><strong data-lang data-lang-ko="포지션:" data-lang-en="Position:">포지션:</strong> <span data-lang data-lang-ko="포워드" data-lang-en="Forward">포워드</span></p>
+                    <p><strong data-lang data-lang-ko="키:" data-lang-en="Height:">키:</strong> 188 cm</p>
+                    <p><strong data-lang data-lang-ko="몸무게:" data-lang-en="Weight:">몸무게:</strong> 86 kg</p>
+                </div>
+                <div class="player">
+                    <h2 data-lang data-lang-ko="손흥민" data-lang-en="Heung-Min Son">손흥민</h2>
+                    <p><strong data-lang data-lang-ko="포지션:" data-lang-en="Position:">포지션:</strong> <span data-lang data-lang-ko="포워드" data-lang-en="Forward">포워드</span></p>
+                    <p><strong data-lang data-lang-ko="키:" data-lang-en="Height:">키:</strong> 183 cm</p>
+                    <p><strong data-lang data-lang-ko="몸무게:" data-lang-en="Weight:">몸무게:</strong> 78 kg</p>
+                </div>
+                <div class="player">
+                    <h2 data-lang data-lang-ko="위고 요리스" data-lang-en="Hugo Lloris">위고 요리스</h2>
+                    <p><strong data-lang data-lang-ko="포지션:" data-lang-en="Position:">포지션:</strong> <span data-lang data-lang-ko="골키퍼" data-lang-en="Goalkeeper">골키퍼</span></p>
+                    <p><strong data-lang data-lang-ko="키:" data-lang-en="Height:">키:</strong> 188 cm</p>
+                    <p><strong data-lang data-lang-ko="몸무게:" data-lang-en="Weight:">몸무게:</strong> 82 kg</p>
+                </div>
+                <div class="player">
+                    <h2 data-lang data-lang-ko="델레 알리" data-lang-en="Dele Alli">델레 알리</h2>
+                    <p><strong data-lang data-lang-ko="포지션:" data-lang-en="Position:">포지션:</strong> <span data-lang data-lang-ko="미드필더" data-lang-en="Midfielder">미드필더</span></p>
+                    <p><strong data-lang data-lang-ko="키:" data-lang-en="Height:">키:</strong> 188 cm</p>
+                    <p><strong data-lang data-lang-ko="몸무게:" data-lang-en="Weight:">몸무게:</strong> 76 kg</p>
+                </div>
+            </div>
+        </div>
+        <div class="section-divider"></div>
+        <div id="gallery" class="hidden gallery">
+            <div class="scroll-target">
+                <h2 data-lang data-lang-ko="선수 갤러리" data-lang-en="Player Gallery">선수 갤러리</h2>
+                <div class="player">
+                    <h2 data-lang data-lang-ko="해리 케인" data-lang-en="Harry Kane">해리 케인</h2>
+                    <img src="/yeonsubro/Tottenham_Hotspur_FC_files/harry.jpg" alt="해리 케인">
+                </div>
+                <div class="player">
+                    <h2 data-lang data-lang-ko="손흥민" data-lang-en="Heung-Min Son">손흥민</h2>
+                    <img src="/yeonsubro/Tottenham_Hotspur_FC_files/son.jpg" alt="손흥민">
+                </div>
+                <div class="player">
+                    <h2 data-lang data-lang-ko="위고 요리스" data-lang-en="Hugo Lloris">위고 요리스</h2>
+                    <img src="/yeonsubro/Tottenham_Hotspur_FC_files/Lloris.jpg" alt="위고 요리스">
+                </div>
+                <div class="player">
+                    <h2 data-lang data-lang-ko="델레 알리" data-lang-en="Dele Alli">델레 알리</h2>
+                    <img src="/yeonsubro/Tottenham_Hotspur_FC_files/dele_alli.jpg" alt="델레 알리">
+                </div>
+            </div>
+        </div>
+        <div class="section-divider"></div>
+        <div id="tactics" class="hidden tactics">
+            <div class="scroll-target">
+                <h2 data-lang data-lang-ko="토트넘 전술" data-lang-en="Tottenham Tactics">토트넘 전술</h2>
+                <p data-lang data-lang-ko="토트넘은 4-3-3 또는 4-2-3-1 포메이션을 자주 사용하는 고강도 압박, 공격적인 스타일의 플레이를 채택합니다. 이 접근 방식은 빠른 전환, 견고한 수비 조직, 그리고 포워드들의 속도와 창의성을 활용하는 것을 중점으로 합니다." data-lang-en="Tottenham often employs a high-intensity pressing, attacking style of play, frequently using 4-3-3 or 4-2-3-1 formations. This approach emphasizes quick transitions, solid defensive organization, and the utilization of the forwards' speed and creativity.">토트넘은 4-3-3 또는 4-2-3-1 포메이션을 자주 사용하는 고강도 압박, 공격적인 스타일의 플레이를 채택합니다. 이 접근 방식은 빠른 전환, 견고한 수비 조직, 그리고 포워드들의 속도와 창의성을 활용하는 것을 중점으로 합니다.</p>
+                <img src="/yeonsubro/Tottenham_Hotspur_FC_files/전술.jpg" alt="토트넘 전술">
+            </div>
+        </div>
+        <div class="section-divider"></div>
+        <div id="location" class="hidden location">
+            <div class="scroll-target">
+                <h2 data-lang data-lang-ko="토트넘 홈구장" data-lang-en="Tottenham Home Ground">토트넘 홈구장</h2>
+                <p data-lang data-lang-ko="토트넘 홋스퍼 스타디움은 토트넘 홋스퍼의 홈구장으로, 런던 북부에 위치해 있습니다. 이 구장은 이전의 화이트 하트 레인 구장을 대체하였으며, 62,062명의 관중을 수용할 수 있어 프리미어 리그에서 가장 큰 구장 중 하나입니다." data-lang-en="Tottenham Hotspur Stadium is the home ground of Tottenham Hotspur, located in North London. It replaced the former White Hart Lane stadium and can accommodate 62,062 spectators, making it one of the largest stadiums in the Premier League.">토트넘 홋스퍼 스타디움은 토트넘 홋스퍼의 홈구장으로, 런던 북부에 위치해 있습니다. 이 구장은 이전의 화이트 하트 레인 구장을 대체하였으며, 62,062명의 관중을 수용할 수 있어 프리미어 리그에서 가장 큰 구장 중 하나입니다.</p>
+                <img src="/yeonsubro/Tottenham_Hotspur_FC_files/stardium.jpg" alt="토트넘 홋스퍼 스타디움">
+            </div>
+        </div>
+    </section>
+</body>
+</html>

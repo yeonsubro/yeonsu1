@@ -49,10 +49,10 @@ const todoList = [
     {no: 102, title:'엄마 생일 선물', done:false},
     {no: 103, title:'아빠 집 사주기', done:true},
     {no: 104, title:'취직 하기', done:false},
-    {no: 104, title:'여친 부모님 여행 시켜주기', done:false},
+    {no: 105, title:'여친 부모님 여행 시켜주기', done:false}
 ];
 
-var noSeq = 105;
+var noSeq = 106;
 
 // AJAX를 REST 방식으로 처리 (HTML 폼은 GET과 POST만 가능)
 // GET - 출력, 검색
@@ -62,8 +62,30 @@ var noSeq = 105;
 // FETCH - 부분수정
 // ... 그 외
 
-// 검색 or SelectAll
+//  검색
+app.get('/todo/search', (req, res) => {
+    var keyword = req.query.keyword;
+    var newTodoList = todoList.filter((todo)=> {
+        return todo.title.findIndex(keyword) != -1;
+    });
+    res.send(newTodoList);
+});
+
+//  상세보기 or 전체보기
 app.get('/todo', (req, res) => {
+    if(req.query.no) {
+        var no = req.query.no;
+        var idx = todoList.findIndex((t)=>{
+            return t.no == no;
+        });
+        if(idx != -1) {
+            res.send(todoList[idx]);
+        } else {
+            res.send(null);
+        }
+        return;
+    }
+    
     res.send(todoList);
 });
 
@@ -95,7 +117,7 @@ app.put('/todo', (req, res) => {
 // 삭제
 app.delete('/todo', (req, res) => {
     var no = parseInt(req.body.no);
-    var idx = todoList.findIndex((t) =>{
+    var idx = todoList.findIndex((t)=> {
         return t.no == no;
     });
     if(idx != -1) {

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <ul id="todoListArea"></ul>
+  <script>
+    // jQuery 라이브러리의 ajax() 함수 (CDN 또는 설치)
+    // axios 라이브러리 이용 (CDN 또는설치)
+    // fetch 모듈(웹 브라우저 표준)
+
+    //EventTarget <- XMLHttpRequestEventTarget <- XMLHttpRequest
+    const xhr = XMLHttpRequest();
+    //console.dir(xhr);
+    const xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function(event){
+      if(xhr.status === 200 &&xhr.readyState ==4){
+        //console.log(xhr.responseText);
+        //console.log("readyState: ", xhr.readyState);
+        //console.log("status: ", xhr.status);
+        //console.log(xhr.responseText);
+       // var doc = xhr.responserXML;
+       // console.log(doc.getElementsByTagName("p")[1]);
+       var todoListTxt = xhr.responseText();
+       var todoList = JASON.parse(todoListTxt)['todoLists'];
+       var noCnt = JASON.parse(todoListTxt)['noCnt'];
+
+       console.log(todoList);
+       console.log(noCnt);
+
+       const todoListArea = document.querySelector('#todoListArea');
+       todoList.array.forEach(element => {
+        console.log(element);
+       });
+      }
+    }
+
+    var method = "GET";
+    var url = "todoList.json";
+    xhr.open(method, url);
+
+    xhr.send();
+  </script>
+</body>
+</html>
