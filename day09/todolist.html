@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        span.okTitle {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <p>
+        할일: <input type="text" class="title">
+        <button id="saveBtn">SAVE</button>
+    </p>
+    <ul class="resultArea">
+    </ul>
+
+    <script>
+        var saveBtn = document.querySelector("#saveBtn");
+        var title = document.querySelector(".title");
+        var todoList = [];
+        var todoSeq = 1;
+
+        function drawList() {
+            var listArea = document.querySelector(".resultArea");
+            listArea.innerHTML = "";
+            todoList.forEach(function(todo) {
+                var liTag = document.createElement("li");
+                var checkBox = document.createElement("input");
+                var delBtn = document.createElement("button");
+                var spanTag = document.createElement("span");
+
+                liTag.style.listStyle = "none";
+                checkBox.type = "checkbox";
+                spanTag.className = todo.done ? "okTitle" : "";
+                checkBox.checked = todo.done;
+                spanTag.innerText = todo.title + " ";
+                delBtn.innerText = "Delete";
+
+                delBtn.addEventListener('click', function() {
+                    var idx = todoList.findIndex(t => t.no === todo.no);
+                    if (idx !== -1) {
+                        todoList.splice(idx, 1);
+                        drawList();
+                    }
+                });
+
+                checkBox.addEventListener('change', function() {
+                    var idx = todoList.findIndex(t => t.no === todo.no);
+                    if (idx !== -1) {
+                        todoList[idx].done = !todoList[idx].done;
+                        drawList();
+                    }
+                });
+
+                listArea.appendChild(liTag); // ul태그 밑에 li태그 붙여주기
+                liTag.appendChild(checkBox); // li태그 밑에 checkbox태그 붙여주기
+                liTag.appendChild(spanTag);  // li태그 밑에 span태그 붙여주기
+                liTag.appendChild(delBtn);   // li태그 밑에 button태그 붙여주기 (삭제버튼)
+            });
+        }
+
+        function append() {
+            var newTitle = title.value.trim();
+            if (newTitle) {
+                todoList.push({ no: todoSeq++, title: newTitle, done: false });
+                title.value = "";
+                drawList();
+            }
+        }
+
+        saveBtn.addEventListener('click', append);
+        title.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                append();
+            }
+        });
+
+        drawList();
+    </script>
+</body>
+</html>
