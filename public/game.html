@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pachinko</title>
+    <style>
+        body {
+            background-color: #282c34;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #box {
+            border: 5px solid navy;
+            width: 300px;
+            height: 300px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .cellBox {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em; /* 폰트 크기 조정 */
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid black;
+        }
+        .cellBox.jackpot {
+            background-color: gold; /* 잭팟일 때 배경색 */
+        }
+        .cellBox.win {
+            background-color: lightgreen; /* 당첨일 때 배경색 */
+        }
+        #status {
+            margin-top: 10px;
+        }
+        #betInput {
+            width: 60px;
+        }
+        #result {
+            margin-top: 10px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>빠찡꼬래~빠징빠찡꼬래~</h1>
+    <button id="startBtn">START Button</button>
+    <button id="stopBtn">STOP ALL</button>
+    <hr>
+    <div class="buttonContainer">
+        <button id="backBtn">홈페이지로 돌아가기</button>
+    </div>
+    <div class="stopButtons">
+        <button class="stopColBtn" data-col="0">STOP 1</button>
+        <button class="stopColBtn" data-col="1">STOP 2</button>
+        <button class="stopColBtn" data-col="2">STOP 3</button>
+    </div>
+    <div id="box"></div>
+    <div id="status">
+        <p>현재 금액: <span id="balance">10000</span>원</p>
+        <p>
+            배팅 금액: <input type="number" id="betInput" min="1000" step="1000" value="1000">원
+            <button id="betBtn">BET</button>
+        </p>
+    </div>
+    <div id="result"></div>
+
+<script>
+    document.getElementById("backBtn").addEventListener("click", function() {
+    window.location.href = "https://yeonsu0512.web.app/index.html"; // 여기에 이동할 URL을 입력하세요
+});
+    let balance = 10000;
+let betAmount = 1000;
+let isBetPlaced = false;
+let stoppedCols = [false, false, false];
+let totalStopped = 0;
+let isStarted = false; // 시작 상태 추적 변수 추가
+
+function Box() { }
+Box.prototype.init = function() {
+    this.cellBox = document.createElement("div");
+    this.cellBox.setAttribute("class", "cellBox");
+    this.elementLi = document.createElement("div");
+    this.elementLi.innerText = '🍒'; // 기본값 🍒 (체리)
+    this.cellBox.appendChild(this.elementLi);
+    return this.cellBox;
+}
+
+Box.prototype.start = function(speed) {
+    this.y = 0;
+    this.intervalRef = setInterval(() => {
+        this.y -= 10;
+        this.elementLi.innerText = getRandomEmoji(); // 랜덤 이모지 호출
+        if (this.y <= -900) {
+            this.y = 0;
+        }
+    }, speed);
+}
+
+function getRandomEmoji() {
+    const emojis = ['🍒', '🍋', '🍊', '🍇', '🍉', '⭐', '🔔', '7️⃣', '🎰'];
+    return emojis[Math.floor(Math.random() * emojis.length)];
+}
+
+Box.prototype.stop = function() {
+    clearInterval(this.intervalRef);
+    const emojiIndex = Math.floor(Math.abs(this.y) / 100) % 5; // 이모지 인덱스
+    this.elementLi.innerText = getRandomEmoji(); // 정지 시 보여줄 이모지
+}
+
+function checkResults() {
+    const rows = 3;
+    const cols = 3;
+    const results = [];
+    let isJackpot = false;
+
+    for (let i = 0; i < rows; i++) {
+        const rowResult = [];
+        for (let j = 0; j < cols; j++) {
+            const index = i * cols + j;
+            const emoji = boxArr[index].elementLi.innerText;
+            rowResult.push(emoji);
+            boxArr[index].cellBox.classList.remove('jackpot', 'win'); // 기존 클래스 제거
+            if (emoji === '7️⃣') {
+                boxArr[index].cellBox.classList.add('jackpot'); // 잭팟 클래스 추가
+            }
+        }
+        results.push(rowResult);
+    }
+
+    isJackpot = results.some(row => row.join('') === '7️⃣7️⃣7️⃣');
+    let win = false;
+
+    // 잭팟 확인
+    if (isJackpot) {
+        balance += betAmount * 10; // 잭팟 시 배팅 금액의 10배 추가
+        document.getElementById("result").innerText = "잭팟입니다! 현재 금액: " + balance + "원";
+        return;
+    }
+
+    // 당첨 여부 확인
+    for (let i = 0; i < rows; i++) {
+        if (results[i][0] === results[i][1] && results[i][1] === results[i][2]) {
+            win = true;
+            for (let j = 0; j < cols; j++) {
+                boxArr[i * cols + j].cellBox.classList.add('win'); // 당첨 클래스 추가
+            }
+        }
+    }
+
+    for (let i = 0; i < cols; i++) {
+        if (results[0][i] === results[1][i] && results[1][i] === results[2][i]) {
+            win = true;
+            for (let j = 0; j < rows; j++) {
+                boxArr[j * cols + i].cellBox.classList.add('win'); // 당첨 클래스 추가
+            }
+        }
+    }
+
+    if (results[0][0] === results[1][1] && results[1][1] === results[2][2]) {
+        win = true;
+        boxArr[0].cellBox.classList.add('win'); // 대각선 당첨
+        boxArr[4].cellBox.classList.add('win'); // 대각선 당첨
+        boxArr[8].cellBox.classList.add('win'); // 대각선 당첨
+    }
+
+    if (results[0][2] === results[1][1] && results[1][1] === results[2][0]) {
+        win = true;
+        boxArr[2].cellBox.classList.add('win'); // 대각선 당첨
+        boxArr[4].cellBox.classList.add('win'); // 대각선 당첨
+        boxArr[6].cellBox.classList.add('win'); // 대각선 당첨
+    }
+
+    // 당첨 여부에 따라 결과 표시
+    if (win) {
+        balance += betAmount * 2; // 당첨 시 배팅 금액의 2배 추가
+        document.getElementById("result").innerText = "당첨입니다! 현재 금액: " + balance + "원";
+    } else {
+        balance -= betAmount; // 미당첨 시 배팅 금액 차감
+        document.getElementById("result").innerText = "꽝입니다! 현재 금액: " + balance + "원";
+    }
+
+    document.getElementById("balance").innerText = balance;
+}
+
+const divBox = document.querySelector("#box");
+const boxArr = [];
+const rows = 3; 
+const cols = 3; 
+
+for (let i = 0; i < rows; i++) {
+    const rowDiv = document.createElement("div");
+    rowDiv.setAttribute("class", "row");
+    for (let j = 0; j < cols; j++) {
+        const box = new Box();
+        boxArr.push(box);
+        const newBox = box.init();
+        rowDiv.appendChild(newBox);
+    }
+    divBox.appendChild(rowDiv);
+}
+
+const startBtn = document.querySelector("#startBtn");
+const stopBtn = document.querySelector("#stopBtn");
+const stopColBtns = document.querySelectorAll(".stopColBtn");
+
+startBtn.addEventListener('click', function (event) {
+    if (!isBetPlaced) {
+        alert("배팅을 먼저 해주세요.");
+        return;
+    }
+    totalStopped = 0;
+    stoppedCols = [false, false, false];
+    isStarted = true; // 시작 버튼 클릭 시 상태 업데이트
+    boxArr.forEach(function (box) {
+        box.start(Math.floor(5 + Math.random() * 20));
+    });
+});
+
+stopBtn.addEventListener('click', function (event) {
+    if (!isStarted) {
+        alert("먼저 START 버튼을 눌러주세요.");
+        return;
+    }
+    if (!isBetPlaced) {
+        alert("배팅을 먼저 해주세요.");
+        return;
+    }
+    boxArr.forEach(function (box) {
+        box.stop();
+    });
+    totalStopped = 3;
+    checkResults();
+});
+
+stopColBtns.forEach(button => {
+    button.addEventListener('click', function () {
+        if (!isStarted) {
+            alert("먼저 START 버튼을 눌러주세요.");
+            return;
+        }
+        if (!isBetPlaced) {
+            alert("배팅을 먼저 해주세요.");
+            return;
+        }
+        const col = parseInt(this.getAttribute("data-col"));
+        if (stoppedCols[col]) return; // 이미 멈춘 슬롯은 무시
+        stoppedCols[col] = true; // 해당 열 멈춤 상태 업데이트
+
+        for (let i = col; i < boxArr.length; i += cols) {
+            boxArr[i].stop(); // 해당 열의 슬롯 멈추기
+        }
+
+        totalStopped++;
+        if (totalStopped === 3) {
+            checkResults(); // 결과 체크
+        }
+    });
+});
+
+document.getElementById("betBtn").addEventListener('click', function () {
+    betAmount = parseInt(document.getElementById("betInput").value);
+    if (betAmount > balance) {
+        alert("배팅 금액이 현재 금액보다 많습니다.");
+        return;
+    }
+    balance -= betAmount; // 배팅 시 금액 차감
+    isBetPlaced = true;
+    document.getElementById("result").innerText = "배팅 금액: " + betAmount + "원";
+    document.getElementById("balance").innerText = balance; // 현재 금액 업데이트
+});
+</script>
+</body>
+</html>

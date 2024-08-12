@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>에임연습게임</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #87CEEB; /* 하늘색 배경 */
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        #score {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        #timer {
+            font-size: 24px;
+            margin: 20px 0;
+        }
+        #startButton, #restartButton, #backButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            background-color: darkblue;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        #startButton:hover, #restartButton:hover, #backButton:hover {
+            background-color: navy;
+        }
+        #gameArea {
+            width: 400px;  /* 10x10 박스의 가로 크기 (40px x 10) */
+            height: 400px; /* 10x10 박스의 세로 크기 (40px x 10) */
+            border: 2px solid black;
+            position: relative;
+            overflow: hidden; /* 공이 박스를 벗어나지 않도록 */
+            display: none; /* 초기에는 게임 영역 숨김 */
+        }
+        #ball {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.3s; /* 애니메이션 효과 */
+        }
+        #ranking {
+            margin-top: 20px;
+            font-size: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>에임연습게임</h1>
+    <div id="timer">남은 시간: 10.00초</div>
+    <div id="score">점수: 0</div>
+    <button id="startButton">시작하기</button>
+    <div id="gameArea">
+        <div id="ball"></div>
+    </div>
+    <button id="restartButton" style="display: none;">다시하기</button>
+    <button id="backButton" style="display: none;" onclick="location.href= 'index.html';">돌아가기</button>
+
+    <div id="ranking">
+        <h2>순위</h2>
+        <ol id="rankingList">
+            <li>1등: -</li>
+            <li>2등: -</li>
+            <li>3등: -</li>
+            <li>4등: -</li>
+            <li>5등: -</li>
+        </ol>
+    </div>
+
+    <script>
+        let score = 0;
+        let timeLeft = 10;
+        let timerInterval;
+        const scoreDisplay = document.getElementById('score');
+        const timerDisplay = document.getElementById('timer');
+        const ball = document.getElementById('ball');
+        const gameArea = document.getElementById('gameArea');
+        const startButton = document.getElementById('startButton');
+        const restartButton = document.getElementById('restartButton');
+        const backButton = document.getElementById('backButton');
+        const rankingList = document.getElementById('rankingList');
+
+        // 순위 기록 배열
+        const rankings = [];
+
+        // 공을 무작위 위치로 이동시키는 함수
+        function moveBall() {
+            const maxX = gameArea.clientWidth - ball.clientWidth;
+            const maxY = gameArea.clientHeight - ball.clientHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            ball.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        // 점수 증가 및 공 이동
+        ball.addEventListener('click', () => {
+            if (timeLeft > 0) {
+                score++;
+                scoreDisplay.textContent = `점수: ${score}`;
+                moveBall();
+            }
+        });
+
+        // 카운트다운 타이머 설정
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timeLeft -= 0.01; // 0.01초씩 감소
+                timerDisplay.textContent = `남은 시간: ${timeLeft.toFixed(2)}초`; // 소수점 두 자리로 표시
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    ball.style.display = 'none'; // 게임 종료 시 공 숨기기
+                    gameArea.style.display = 'none'; // 게임 영역 숨기기
+                    startButton.style.display = 'none'; // 시작 버튼 숨기기
+                    restartButton.style.display = 'block'; // 다시하기 버튼 보이기
+                    backButton.style.display = 'block'; // 돌아가기 버튼 보이기
+
+                    // 순위에 점수 추가
+                    addScoreToRanking(score);
+                }
+            }, 10); // 10ms마다 호출
+        }
+
+        // 게임 시작
+        startButton.addEventListener('click', () => {
+            score = 0;
+            timeLeft = 10;
+            scoreDisplay.textContent = `점수: ${score}`;
+            timerDisplay.textContent = `남은 시간: ${timeLeft.toFixed(2)}초`;
+            gameArea.style.display = 'block'; // 게임 영역 보이기
+            moveBall(); // 공 위치 설정
+            startButton.style.display = 'none'; // 시작 버튼 숨기기
+            restartButton.style.display = 'none'; // 다시하기 버튼 숨기기
+            backButton.style.display = 'none'; // 돌아가기 버튼 숨기기
+            startTimer(); // 타이머 시작
+        });
+
+        // 다시하기 버튼 클릭 시
+        restartButton.addEventListener('click', () => {
+            score = 0; // 점수 초기화
+            timeLeft = 10; // 시간 초기화
+            scoreDisplay.textContent = `점수: ${score}`;
+            timerDisplay.textContent = `남은 시간: ${timeLeft.toFixed(2)}초`;
+            ball.style.display = 'block'; // 빨간 공 보이기
+            gameArea.style.display = 'block'; // 게임 영역 보이기
+            moveBall(); // 공 위치 설정
+            restartButton.style.display = 'none'; // 다시하기 버튼 숨기기
+            backButton.style.display = 'none'; // 돌아가기 버튼 숨기기
+            startButton.style.display = 'none'; // 시작 버튼 숨기기
+            startTimer(); // 타이머 시작
+        });
+
+        // 점수를 순위에 추가하는 함수
+        function addScoreToRanking(newScore) {
+            rankings.push(newScore);
+            rankings.sort((a, b) => b - a); // 내림차순 정렬
+
+            // 상위 5개의 점수만 유지
+            if (rankings.length > 5) {
+                rankings.length = 5;
+            }
+
+            // 순위 목록 업데이트
+            updateRankingList();
+        }
+
+        // 순위 목록 업데이트 함수
+        function updateRankingList() {
+            const listItems = rankingList.getElementsByTagName('li');
+            for (let i = 0; i < 5; i++) {
+                if (rankings[i] !== undefined) {
+                    listItems[i].textContent = `${i + 1}등: ${rankings[i]}점`;
+                } else {
+                    listItems[i].textContent = `${i + 1}등: -`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
